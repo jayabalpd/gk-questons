@@ -1,0 +1,53 @@
+<?php include "../config1.php" ?>
+
+<?php 
+ if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') 
+ $url = "https://"; 
+ else 
+ $url = "http://"; 
+ $url.= $_SERVER['HTTP_HOST']; 
+ $url.= $_SERVER['REQUEST_URI']; 
+ ?>
+ 
+ <?php
+$current_file_name = basename($_SERVER['PHP_SELF']);
+$file_last_modified = filemtime($current_file_name); 
+?>
+<?php
+
+$subject_n=$_GET['subject_n'];
+$lesson_n=$_GET['lesson_n'];
+$topic_n=$_GET['topic_n'];
+$counter1=$_GET['page'];
+
+
+
+/* get topic Name and id */
+$msubjectn = str_replace("-"," ",$subject_n);
+$sql431 = "SELECT * FROM subjects_add WHERE subject_name='$msubjectn' limit 1";
+if ($result431 = $mysqli -> query($sql431)) {
+  while ($row = $result431 -> fetch_row()) {
+$subject=$row[0];
+  }
+  $result431 -> free_result();
+}
+
+$mlessonn = str_replace("-"," ",$lesson_n);
+$sql432 = "SELECT * FROM add_lesson WHERE lesson_name='$mlessonn' AND subject_id='$subject' limit 1";
+if ($result432 = $mysqli -> query($sql432)) {
+  while ($row = $result432 -> fetch_row()) {
+$lesson=$row[0];
+  }
+  $result432 -> free_result();
+}
+
+$mtopicn = str_replace("-"," ",$topic_n);
+$sql433 = "SELECT * FROM add_topic WHERE topic_name='$mtopicn' AND subject_id='$subject' AND lesson_id='$lesson' limit 1";
+if ($result433 = $mysqli -> query($sql433)) {
+  while ($row = $result433 -> fetch_row()) {
+$topic=$row[0];
+  }
+  $result433 -> free_result();
+}
+$imageog=300+$counter1;
+?>
